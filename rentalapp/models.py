@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime import date
 
 class RentalModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -13,9 +13,9 @@ class Profile(RentalModel):
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=200)
     reference_id = models.IntegerField()
-    logged_in_at = models.DateField()
+    logged_in_at = models.DateField(default=date.today())
     otp = models.IntegerField()
-    otp_expiry = models.DateField()
+    otp_expiry = models.DateField(default=date.today())
     status = models.IntegerField()
 
 
