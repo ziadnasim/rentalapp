@@ -19,16 +19,16 @@ class Profile(RentalModel):
     status = models.IntegerField()
 
 
-class House(RentalModel):
+class Houses(RentalModel):
     name = models.CharField(max_length=200)
     owner_id = models.IntegerField()
     address_id = models.IntegerField()
 
 
 class Address(RentalModel):
-    house_id = models.IntegerField()
-    name = models.CharField(max_length=200)
-    location = models.CharField(max_length=200)
+    house = models.ForeignKey(Houses, related_name='houses', on_delete=models.PROTECT, null=True)
+    name = models.CharField(max_length=150)
+    location = models.CharField(max_length=255)
     lat = models.FloatField()
     long = models.FloatField()
 
@@ -40,7 +40,7 @@ class Properties(RentalModel):
 
 class HouseProperties(RentalModel):
     house_id = models.IntegerField()
-    property_id = models.IntegerField()
+    property = models.ForeignKey(Properties, related_name='properties', on_delete=models.PROTECT, null=True)
     value = models.CharField(max_length=200)
 
 
