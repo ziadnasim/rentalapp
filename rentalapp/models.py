@@ -18,12 +18,12 @@ class Profile(models.Model):
 
 class House(models.Model):
     name = models.CharField(max_length=255)
-    owner = models.ForeignKey(Profile, related_name='profiles', on_delete=models.PROTECT, null=True)
+    owner = models.ForeignKey(Profile, related_name='profiles', on_delete= models.PROTECT, null=True)
 
 
 class Address(models.Model):
-    house = models.ForeignKey(House, related_name='houses', on_delete=models.PROTECT, null=True)
-    name = models.CharField(max_length=255)
+    house = models.ForeignKey(House, related_name='houses', on_delete= models.PROTECT, null=True)
+    name = models.CharField(max_length=255)  #-------------------- why this name
     location = models.CharField(max_length=255)
     lat = models.FloatField()
     long = models.FloatField()
@@ -35,22 +35,22 @@ class Properties(models.Model):
 
 
 class HouseProperties(models.Model):
-    address = models.ForeignKey(Address, related_name='addresses', on_delete=models.PROTECT, null=True)
-    property = models.ForeignKey(Properties, related_name='properties', on_delete=models.PROTECT, null=True)
+    address = models.ForeignKey(Address, related_name='addresses', on_delete= models.PROTECT, null=True)
+    property = models.ForeignKey(Properties, related_name='properties', on_delete= models.PROTECT, null=True)
     value = models.CharField(max_length=255)
 
 
 class Review(models.Model):
-    user = models.ForeignKey(House, related_name='review_houses', on_delete=models.PROTECT, null=True)
+    user = models.ForeignKey(House, related_name='review_houses', on_delete= models.PROTECT, null=True)
     comment = models.CharField(max_length=255)
     rating = models.CharField(max_length=255)
 
 
 class Wishlist(models.Model):
-    user = models.ForeignKey(Profile, related_name='wishlist_profiles', on_delete=models.PROTECT, null=True)
+    user = models.ForeignKey(Profile, related_name='wishlist_profiles', on_delete= models.PROTECT, null=True)
     house_id = models.IntegerField()
 
 
 class Auth(models.Model):
-    user = models.ForeignKey(Profile, related_name='auth_profiles', on_delete=models.PROTECT, null=True)
+    user = models.ForeignKey(Profile, related_name='auth_profiles', on_delete= models.PROTECT, null=True)
     device_id = models.IntegerField()
