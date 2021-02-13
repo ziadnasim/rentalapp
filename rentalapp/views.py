@@ -16,6 +16,8 @@ def index(request):
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
+    # permission_classes = (IsAuthenticated,) -- commented for not authenticating now
+
     queryset = Profile.objects.all().order_by('name')
     serializer_class = ProfileSerializer
 
