@@ -13,5 +13,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('hello/', views.ProtectedView.as_view(), name='hello'),
+    path('opost/', views.OnlyPost.as_view(), name='opost'),
+    path('hello_world/', views.hello_world),
     path('access/', obtain_auth_token, name='api_token_auth')
 ]
