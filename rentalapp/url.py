@@ -6,6 +6,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'profiles', views.ProfileViewSet)
+router.register(r'createuser', views.CreateUser)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -14,6 +15,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('hello/', views.ProtectedView.as_view(), name='hello'),
     path('opost/', views.OnlyPost.as_view(), name='opost'),
+    # path('createuser/', views.CreateUser.as_view(), name='createuser'),
     path('hello_world/', views.hello_world),
     path('access/', obtain_auth_token, name='api_token_auth')
 ]

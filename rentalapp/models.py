@@ -1,29 +1,44 @@
+from datetime import date
+
+from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.admin import User
 
 
 class Profile(models.Model):
-    mobile = models.CharField(max_length=11)
-    name = models.CharField(max_length=100)
-    photo_url = models.CharField(max_length=255)
-    username = models.CharField(max_length=50)
-    password = models.CharField(max_length=255)
-    reference_id = models.IntegerField()
-    logged_in_at = models.DateField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, null=True, blank=True)
+    photo_url = models.CharField(max_length=255, null=True, blank=True)
+    reference_id = models.IntegerField(null=True, blank=True)
+    logged_in_at = models.DateField(null=True, blank=True)
     created_at = models.DateField()
-    updated_at = models.DateField()
+    updated_at = models.DateField(null=True, blank=True)
     otp = models.IntegerField()
-    otp_expiry = models.DateField()
+    otp_expiry = models.DateField(null=True, blank=True)
     status = models.IntegerField()
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance, created_at=date.today(), otp=111111, status=1)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 class House(models.Model):
     name = models.CharField(max_length=255)
-    owner = models.ForeignKey(Profile, related_name='profiles', on_delete= models.PROTECT, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 class Address(models.Model):
-    house = models.ForeignKey(House, related_name='houses', on_delete= models.PROTECT, null=True)
-    name = models.CharField(max_length=255)  #-------------------- why this name
+    house = models.ForeignKey(House, related_name='houses', on_delete=models.PROTECT, null=True)
+    name = models.CharField(max_length=255)  # -------------------- why this name
     location = models.CharField(max_length=255)
     lat = models.FloatField()
     long = models.FloatField()
@@ -35,22 +50,22 @@ class Properties(models.Model):
 
 
 class HouseProperties(models.Model):
-    address = models.ForeignKey(Address, related_name='addresses', on_delete= models.PROTECT, null=True)
-    property = models.ForeignKey(Properties, related_name='properties', on_delete= models.PROTECT, null=True)
+    address = models.ForeignKey(Address, related_name='addresses', on_delete=models.PROTECT, null=True)
+    property = models.ForeignKey(Properties, related_name='properties', on_delete=models.PROTECT, null=True)
     value = models.CharField(max_length=255)
 
 
 class Review(models.Model):
-    user = models.ForeignKey(House, related_name='review_houses', on_delete= models.PROTECT, null=True)
+    user = models.ForeignKey(House, related_name='review_houses', on_delete=models.PROTECT, null=True)
     comment = models.CharField(max_length=255)
     rating = models.CharField(max_length=255)
 
 
 class Wishlist(models.Model):
-    user = models.ForeignKey(Profile, related_name='wishlist_profiles', on_delete= models.PROTECT, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     house_id = models.IntegerField()
 
 
 class Auth(models.Model):
-    user = models.ForeignKey(Profile, related_name='auth_profiles', on_delete= models.PROTECT, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     device_id = models.IntegerField()

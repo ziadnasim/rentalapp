@@ -1,13 +1,16 @@
+from datetime import date
+
 from django.shortcuts import render
 
 # api call libs
 from rest_framework import viewsets
+from rest_framework.authtoken.admin import User
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializer import ProfileSerializer
+from .serializer import ProfileSerializer, UserSerializer
 from .models import Profile
 
 
@@ -46,3 +49,20 @@ class OnlyPost(APIView):
             {"echo": city}
         ]
         return Response(status=200, data=return_data)
+
+
+class CreateUser(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    # posted_data = self.request.data
+    #
+    # username = posted_data['username']
+    # password = posted_data['password']
+    # user = User(id=1, username=username, password=password)
+    # user.save()
+    # profile = Profile(user, logged_in_at=date.today(), created_at=date.today(), updated_at=date.today(), otp=111111,
+    #                   otp_expiry=date.today(), status=1)
+    # profile.save()
+    #
+    # return Response(status=200, data=profile)
