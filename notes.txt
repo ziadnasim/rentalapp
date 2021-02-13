@@ -1,0 +1,2 @@
+superuser -> admin / admin@admin.com / 123456
+rest-api -> localhost/profiles
