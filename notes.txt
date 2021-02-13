@@ -1,2 +1,12 @@
 superuser -> admin / admin@admin.com / 123456
 rest-api -> localhost/profiles
+        -> localhost/access || post username and pass to get access token
+        -> localhost/hello || post in header with -->> Authorization Token 60642d54a64f764ebf58ea1ba472fd597215a672
+
+
+
+
+
+//TODO:
+
+1. Need to create user registration api
