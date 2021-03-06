@@ -10,8 +10,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializer import ProfileSerializer, UserSerializer
-from .models import Profile
+from .serializer import ProfileSerializer, UserSerializer, PropSerializer
+from .models import Profile, Properties
 
 
 # Create your views here.
@@ -26,6 +26,13 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
 
 
+class PropViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+
+    queryset = Properties.objects.all().order_by('name')
+    serializer_class = PropSerializer
+
+
 class ProtectedView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -34,7 +41,11 @@ class ProtectedView(APIView):
         return Response(content)
 
 
-@api_view(['GET', 'POST'])
+# @api_view(['GET', 'POST'])
+class HELLOWORLDVIEW(APIView):
+    permission_classes = (IsAuthenticated,)
+
+
 def hello_world(request):
     if request.method == 'POST':
         return Response({"message": "Got some data!", "data": request.data})

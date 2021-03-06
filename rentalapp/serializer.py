@@ -1,15 +1,19 @@
 from rest_framework import serializers
 from rest_framework.authtoken.admin import User
 
-from .models import Profile
+from .models import Profile, Properties
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
-        fields = ('name', 'photo_url', 'username', 'password', 'reference_id', 'logged_in_at', 'created_at',
+        fields = (User, 'name', 'photo_url', 'username', 'password', 'reference_id', 'logged_in_at', 'created_at',
                   'updated_at', 'otp', 'otp_expiry', 'status')
 
+class PropSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Properties
+        fields = ('name', 'index')
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
